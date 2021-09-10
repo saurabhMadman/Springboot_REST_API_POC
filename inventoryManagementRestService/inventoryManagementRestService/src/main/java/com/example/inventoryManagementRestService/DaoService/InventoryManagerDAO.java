@@ -1,5 +1,6 @@
 package com.example.inventoryManagementRestService.DaoService;
 
+import com.example.inventoryManagementRestService.entity.IteamList;
 import com.example.inventoryManagementRestService.entity.Order_Received;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -18,7 +19,6 @@ public class InventoryManagerDAO implements InventoryManagerInterfaceDAO {
         this.entityManager = entityManager;
     }
 
-    @Override
     public Order_Received findOrder(int id) {
         //get current Hibernate session
         Session session = entityManager.unwrap(Session.class);
@@ -28,7 +28,6 @@ public class InventoryManagerDAO implements InventoryManagerInterfaceDAO {
         return order_received;
     }
 
-    @Override
     public void saveOrUpdate(Order_Received order_received) {
         Session currentSession = entityManager.unwrap(Session.class);
         currentSession.saveOrUpdate(order_received);
@@ -47,7 +46,6 @@ public class InventoryManagerDAO implements InventoryManagerInterfaceDAO {
         return 1;
     }
 
-    @Override
     public List<Order_Received> orderReceivedAll() {
         Session currentSession = entityManager.unwrap(Session.class);
         List<Order_Received> order_receivedList= currentSession.createQuery("from Order_Received").list();

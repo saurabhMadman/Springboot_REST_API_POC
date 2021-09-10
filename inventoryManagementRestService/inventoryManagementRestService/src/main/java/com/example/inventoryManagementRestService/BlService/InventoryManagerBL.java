@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class InventoryManagerBL implements InventoryManagerInterfaceBl{
 
-    InventoryManagerDAO inventoryManagerDAO;
+    private InventoryManagerDAO inventoryManagerDAO;
 
     @Autowired
     public InventoryManagerBL(InventoryManagerDAO inventoryManagerDAO) {

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface InvertoryManagerWareHouseInterfaceBl {
 
-    IteamList findOrder(int id);
+    IteamList findItem(int id);
 
     void save(IteamList iteamList);
 
@@ -15,6 +15,6 @@ public interface InvertoryManagerWareHouseInterfaceBl {
 
     void updateOrderReceived(IteamList iteamList);
 
-    List<IteamList> orderReceivedAll();
+    List<IteamList> iteamListsAll();
 
 }

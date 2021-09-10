@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/inorder")
 public class InventoryManagerController {
 
     private InventoryManagerBL inventoryManagerBL;
@@ -47,8 +47,7 @@ public class InventoryManagerController {
         }
     }
 
-    /**Updating Object
-     * @return*/
+    /**Updating Object*/
     @PutMapping("/update")
     public HttpStatus updateOrder_received(@RequestBody Order_Received order_received){
         inventoryManagerBL.updateOrderReceived(order_received);
