@@ -1,19 +1,17 @@
 package com.example.inventoryManagementRestService.DaoService;
 
 import com.example.inventoryManagementRestService.entity.Order_Received;
-import org.hibernate.QueryException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @Repository
 public class InventoryManagerDAO implements InventoryManagerInterfaceDAO {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     @Autowired
     public InventoryManagerDAO(EntityManager entityManager) {
@@ -25,17 +23,35 @@ public class InventoryManagerDAO implements InventoryManagerInterfaceDAO {
         //get current Hibernate session
         Session session = entityManager.unwrap(Session.class);
         //create Query
-        Order_Received order_received  = session.get(Order_Received.class,id);
+        Order_Received order_received = session.get(Order_Received.class, id);
+        session.flush();
         return order_received;
     }
 
     @Override
-    public void save(Order_Received order_received) {
-
+    public void saveOrUpdate(Order_Received order_received) {
+        Session currentSession = entityManager.unwrap(Session.class);
+        currentSession.saveOrUpdate(order_received);
+        currentSession.flush();
     }
 
     @Override
-    public void deleteById(int id) {
-
+    public int deleteById(int id) {
+        Session currentSession = entityManager.unwrap(Session.class);
+        Order_Received order_received = currentSession.get(Order_Received.class, id);
+        if (order_received == null) {
+            return -1;
+        }
+        currentSession.delete(order_received);
+        currentSession.flush();
+        return 1;
     }
+
+    @Override
+    public List<Order_Received> orderReceivedAll() {
+        Session currentSession = entityManager.unwrap(Session.class);
+        List<Order_Received> order_receivedList= currentSession.createQuery("from Order_Received").list();
+        return order_receivedList;
+    }
+
 }
