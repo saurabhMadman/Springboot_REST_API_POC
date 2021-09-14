@@ -1,6 +1,5 @@
 package com.example.inventoryManagementRestService.DaoService;
 
-import com.example.inventoryManagementRestService.entity.IteamList;
 import com.example.inventoryManagementRestService.entity.Order_Received;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -52,4 +51,9 @@ public class InventoryManagerDAO implements InventoryManagerInterfaceDAO {
         return order_receivedList;
     }
 
+    public Long getCountofOrder() {
+        Session currentSession = entityManager.unwrap(Session.class);
+        Query query = currentSession.createQuery("Select count(*) from Order_Received");
+        return  (Long) query.uniqueResult();
+    }
 }

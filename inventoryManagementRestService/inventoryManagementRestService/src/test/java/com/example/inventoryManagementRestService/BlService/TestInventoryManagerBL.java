@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-class TestInventoryManagerBL {
+public class TestInventoryManagerBL {
 
     @Mock
     private InventoryManagerDAO inventoryManagerDAO;
@@ -28,7 +28,7 @@ class TestInventoryManagerBL {
     private InventoryManagerBL inventoryManagerBL;
 
     @Before
-    public void setuo() {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
     }
 

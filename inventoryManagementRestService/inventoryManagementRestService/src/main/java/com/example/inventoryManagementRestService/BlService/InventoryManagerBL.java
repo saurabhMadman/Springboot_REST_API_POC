@@ -50,4 +50,10 @@ public class InventoryManagerBL implements InventoryManagerInterfaceBl{
     public List<Order_Received> orderReceivedAll() {
         return inventoryManagerDAO.orderReceivedAll();
     }
+
+
+    @Transactional
+    public Long countList(){
+        return inventoryManagerDAO.getCountofOrder();
+    }
 }
