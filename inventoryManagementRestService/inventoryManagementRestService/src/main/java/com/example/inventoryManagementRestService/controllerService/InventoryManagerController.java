@@ -2,6 +2,8 @@ package com.example.inventoryManagementRestService.controllerService;
 
 import com.example.inventoryManagementRestService.BlService.InventoryManagerBL;
 import com.example.inventoryManagementRestService.entity.Order_Received;
+import com.example.inventoryManagementRestService.exception.InvalidArgumentExceptionClass;
+import com.example.inventoryManagementRestService.exception.ResourceNotFoundExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +26,16 @@ public class InventoryManagerController {
      * Find Single Object
      */
     @GetMapping(path = "/{orderId}", produces = "application/json")
-    public ResponseEntity getOrderPlace(@PathVariable int orderId) {
-        Order_Received order_received = inventoryManagerBL.findOrder(orderId);
-        if (order_received == null) {
-            throw new RuntimeException("Order Id id not Valid or its Null");
+    public ResponseEntity getOrderPlace(@PathVariable Integer orderId) throws ResourceNotFoundExceptionHandler, InvalidArgumentExceptionClass {
+        if((orderId == null)){
+            String[] error = {"OrderId should be Integer Only"};
+            throw new InvalidArgumentExceptionClass(error);
         }
-        return new ResponseEntity<>(order_received, HttpStatus.OK);
+        Order_Received order_received = inventoryManagerBL.findOrder(orderId);
+        if(order_received == null){
+            throw new ResourceNotFoundExceptionHandler("Order Was Not Found" +orderId);
+        }
+        return ResponseEntity.ok(order_received);
     }
 
     /**
@@ -45,10 +51,10 @@ public class InventoryManagerController {
      * Delete Object By Id
      */
     @DeleteMapping(path = "/{orderId}", produces = "application/json")
-    public ResponseEntity deleteOrder(@PathVariable int orderId) {
+    public ResponseEntity deleteOrder(@PathVariable int orderId) throws ResourceNotFoundExceptionHandler {
         int i = inventoryManagerBL.deleteById(orderId);
         if (i == -1) {
-            throw new RuntimeException("Order Id id not Valid or its Null");
+            throw new ResourceNotFoundExceptionHandler("OrderId Was Not Found :" +orderId);
         }
         return new ResponseEntity<>(i, HttpStatus.OK);
     }
@@ -58,8 +64,8 @@ public class InventoryManagerController {
      */
     @PutMapping(path = "/update", produces = "application/json")
     public ResponseEntity updateOrder_received(@RequestBody Order_Received order_received) {
-        inventoryManagerBL.updateOrderReceived(order_received);
         if (order_received != null) {
+            inventoryManagerBL.updateOrderReceived(order_received);
             return new ResponseEntity<>("updated", HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
